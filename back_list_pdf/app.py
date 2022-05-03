@@ -8,10 +8,17 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
-@app.route('/')
-def hello():
-    return 'Hello, World!'
 
+FLUTTER_WEB_APP = 'templates'
+
+
+@app.route('/')
+def render_page():
+    return render_template('index.html')
+
+@app.route('/web/')
+def render_page_web():
+    return render_template('index.html')
 
 @app.route("/api/getAllRecords", methods=["GET"])
 def getAllRecords():
@@ -33,3 +40,15 @@ def getAllRecords():
     df.set_index('recordId')
     dfOkOk = dfOk.rename(columns={"File Container": "link"})
     return dfOkOk.to_json(orient="records")
+
+@app.route('/web/<path:name>')
+def return_flutter_doc(name):
+
+    datalist = str(name).split('/')
+    DIR_NAME = FLUTTER_WEB_APP
+
+    if len(datalist) > 1:
+        for i in range(0, len(datalist) - 1):
+            DIR_NAME += '/' + datalist[i]
+
+    return send_from_directory(DIR_NAME, datalist[-1])

@@ -1,0 +1,5 @@
+---
+deployment:
+  - export DEPLOYPATH=/home/gnmc3466/sous_domaine/test_list/
+  - /bin/cp -R list_pdf/build/web $DEPLOYPATH/templates/
+  - /bin/cp app.py $DEPLOYPATH
